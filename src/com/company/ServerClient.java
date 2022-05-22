@@ -1,36 +1,25 @@
 package com.company;
 
 import java.io.*;
-import java.net.*;
+import java.net.Socket;
+import java.util.Scanner;
 
 public class ServerClient {
-    private static Socket clientServer;
-    private static BufferedReader reader;
-    private static BufferedReader in;
-    private static BufferedWriter out;
 
     public static void main(String[] args) throws IOException {
-        try {
-            try {
-                clientServer = new Socket("localhost", 8001);
-                reader = new BufferedReader(new InputStreamReader(System.in));
-                in = new BufferedReader(new InputStreamReader(clientServer.getInputStream()));
-                out = new BufferedWriter(new OutputStreamWriter(clientServer.getOutputStream()));
-                System.out.println("Write your message:");
-                String text = in.readLine();
-                out.write(text + "\n");
-                out.flush();
-                String serverAnswer = in.readLine();
-                System.out.println(serverAnswer);
-            } finally {
-                System.out.println("Client closed.");
-                clientServer.close();
-                in.close();
-                out.close();
-            }
+
+        Socket socket = new Socket("127.0.0.1", 8001);
+        try (BufferedReader in = new BufferedReader(
+                new InputStreamReader(socket.getInputStream()));
+             PrintWriter out = new PrintWriter(
+                     new OutputStreamWriter(socket.getOutputStream()), true);
+             Scanner scanner = new Scanner(System.in)) {
+            String msg;
+            System.out.println("Enter message for server...");
+            msg = scanner.nextLine();
+            out.println(msg);
+            System.out.println("SERVER: " + in.readLine());
         }
-        catch (IOException e) {
-                System.err.println(e);
-        }
+
     }
 }
