@@ -13,7 +13,7 @@ public class ServerClient {
                 new InputStreamReader(socket.getInputStream()));
              PrintWriter out = new PrintWriter(
                      new OutputStreamWriter(socket.getOutputStream()), true);
-             Scanner scanner = new Scanner(System.in)) {
+            Scanner scanner = new Scanner(System.in)) {
             String msg;
             System.out.println("Enter message for server...");
             msg = scanner.nextLine();
